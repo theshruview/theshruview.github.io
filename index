@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Points on a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.31.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+
+    <style>
+    .mapboxgl-popup {
+        max-width: 300px;
+        font: 12px/15px 'Gill Sans', Courier;
+        color: purple;
+        background: black;
+        border-left:15px solid black;
+        border-right:15px solid black;
+        border-top:15px solid black;
+    }
+</style>
+    <div id='map'></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic2hydXRpbXVyYWxpIiwiYSI6ImNqYWV6MDJzMTB6ZHgyeGxld2I4djNoZjAifQ.5UCLziAR_CEVVeXLZqMJAg'; // replace this with your access token
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/shrutimurali/cjaez0y7z6mxm2srosjwthp8e'
+    // replace this with your style URL
+    });
+    map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+      layers: ['query-2krp8y'] // replace this with the name of the layer
+    });
+    if (!features.length) {
+      return;
+    }
+    var feature = features[0];
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+      .setLngLat(feature.geometry.coordinates)
+      .setHTML('<h3>' + feature.properties.cityLabel + '</h3><p>' + feature.properties.population + '</p>')
+      .setLngLat(feature.geometry.coordinates)
+      .addTo(map);
+  });
+    </script>
+  </body>
+</html>
